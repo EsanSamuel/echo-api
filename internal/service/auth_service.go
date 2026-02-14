@@ -11,7 +11,6 @@ import (
 	"github.com/echo/internal/pkg/password"
 	"github.com/echo/internal/pkg/token"
 	"github.com/echo/internal/repository"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthService interface {
@@ -124,7 +123,7 @@ func (s *authService) Login(ctx context.Context, req *models.LoginRequest) (*mod
 	if user.PasswordHash == nil {
 		return nil, errors.New("password not set")
 	}
-	err = bcrypt.CompareHashAndPassword([]byte(*user.PasswordHash), []byte(req.Password))
+	err = password.Compare(*user.PasswordHash, req.Password)
 	if err != nil {
 		return nil, errors.New("Password does not match")
 	}

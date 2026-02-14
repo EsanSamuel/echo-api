@@ -14,7 +14,7 @@ type UserRepository interface {
 	EmailExists(ctx context.Context, email string) (bool, error)
 	CreateRefreshToken(ctx context.Context, user_id int32, refresh_token string, expires_at time.Time) error
 	FindUserByEmail(ctx context.Context, email string) (*models.User, error)
-	FindUserByID(ctx context.Context, id string) (*models.User, error)
+	FindUserByID(ctx context.Context, id int32) (*models.User, error)
 	GetAllUsers(ctx context.Context) ([]models.User, error)
 	UserVerificationToken(ctx context.Context, email string, token string) error
 	FindUserByToken(ctx context.Context, token string) (*models.User, error)
@@ -79,7 +79,7 @@ func (r *userRepository) FindUserByEmail(ctx context.Context, email string) (*mo
 	return &user, nil
 }
 
-func (r *userRepository) FindUserByID(ctx context.Context, id string) (*models.User, error) {
+func (r *userRepository) FindUserByID(ctx context.Context, id int32) (*models.User, error) {
 	user, err := gorm.G[models.User](r.db).Where("id = ?", id).First(ctx)
 
 	if err != nil {

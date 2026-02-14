@@ -51,11 +51,14 @@ func main() {
 
 	jwtManager := jwt.NewManager(cfg.Jwt.Secret, cfg.Jwt.AccessExpiry, cfg.Jwt.RefreshExpiry)
 
+	//Service
 	authService := service.NewAuthService(userRepo, *jwtManager)
+	userService := service.NewUserService(userRepo)
 
 	authHandler := handlers.NewAuthHandler(authService)
+	userHandler := handlers.NewUserHandler(userService)
 
-	router.Setup(e, authHandler, jwtManager)
+	router.Setup(e, authHandler, userHandler, jwtManager)
 
 	go func() {
 		if err := e.Start(serverAddr); err != nil {

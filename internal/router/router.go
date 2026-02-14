@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/echo/internal/handlers"
+	"github.com/echo/internal/middleware"
 	"github.com/echo/internal/pkg/jwt"
 	"github.com/labstack/echo/v5"
 )
@@ -18,6 +19,7 @@ func Health() echo.HandlerFunc {
 func Setup(
 	e *echo.Echo,
 	authHandler *handlers.AuthHandler,
+	userHandler *handlers.UserHandler,
 	jwtManager *jwt.Manager,
 ) {
 	// API v1 group
@@ -29,6 +31,9 @@ func Setup(
 	auth.POST("/verify-user", authHandler.VerifyUser())
 	auth.POST("/login", authHandler.Login())
 
-	//users := api.Group("/users")
-	//users.GET("/me",)
+	users := api.Group("/users")
+	users.Use(middleware.Auth(jwtManager))
+	{
+		users.GET("/me", userHandler.FindUser())
+	}
 }

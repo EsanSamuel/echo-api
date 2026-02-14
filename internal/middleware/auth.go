@@ -37,7 +37,7 @@ func Auth(jwtManager *jwt.Manager) echo.MiddlewareFunc {
 				})
 			}
 
-			c.Set("user_id", claims.ID)
+			c.Set("user_id", claims.UserID)
 			c.Set("user_email", claims.Email)
 
 			return next(c)
