@@ -51,9 +51,9 @@ func main() {
 
 	jwtManager := jwt.NewManager(cfg.Jwt.Secret, cfg.Jwt.AccessExpiry, cfg.Jwt.RefreshExpiry)
 
-	userService := service.NewAuthService(userRepo, *jwtManager)
+	authService := service.NewAuthService(userRepo, *jwtManager)
 
-	authHandler := handlers.NewAuthHandler(userService)
+	authHandler := handlers.NewAuthHandler(authService)
 
 	router.Setup(e, authHandler, jwtManager)
 

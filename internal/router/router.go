@@ -26,4 +26,9 @@ func Setup(
 
 	auth := api.Group("/auth")
 	auth.POST("/register", authHandler.Register())
+	auth.POST("/verify-user", authHandler.VerifyUser())
+	auth.POST("/login", authHandler.Login())
+
+	//users := api.Group("/users")
+	//users.GET("/me",)
 }
